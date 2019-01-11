@@ -1,5 +1,5 @@
 /*!
- * @file Adafruit_MPR121.cpp
+ * @file Adafruit_MPR121_STM32.cpp
  *
  * @mainpage Adafruit MPR121 arduino driver
  *
@@ -26,13 +26,13 @@
  *
  */
 
-#include "Adafruit_MPR121.h"
+#include "Adafruit_MPR121_STM32.h"
 
 /**
  *****************************************************************************************
  *  @brief      Default constructor
  ****************************************************************************************/
-Adafruit_MPR121::Adafruit_MPR121() {
+Adafruit_MPR121_STM32::Adafruit_MPR121_STM32() {
 }
 
 /**
@@ -43,7 +43,7 @@ Adafruit_MPR121::Adafruit_MPR121() {
  *  @param      i2caddr the i2c address the device can be found on. Defaults to 0x5A.
  *  @returns    true on success, false otherwise
  ****************************************************************************************/
-boolean Adafruit_MPR121::begin(uint8_t i2caddr) {
+boolean Adafruit_MPR121_STM32::begin(uint8_t i2caddr) {
   Wire.begin();
     
   _i2caddr = i2caddr;
@@ -101,7 +101,7 @@ boolean Adafruit_MPR121::begin(uint8_t i2caddr) {
  *  @param      touch see Adafruit_MPR121::setThresholds(uint8_t touch, uint8_t release)
  *  @param      release see Adafruit_MPR121::setThresholds(uint8_t touch, uint8_t release)
  ****************************************************************************************/
-void Adafruit_MPR121::setThreshholds(uint8_t touch, uint8_t release) {
+void Adafruit_MPR121_STM32::setThreshholds(uint8_t touch, uint8_t release) {
   setThresholds(touch, release);
 }
 
@@ -119,7 +119,7 @@ void Adafruit_MPR121::setThreshholds(uint8_t touch, uint8_t release) {
  *  @param      touch the touch threshold value from 0 to 255.
  *  @param      release the release threshold from 0 to 255.
  ****************************************************************************************/
-void Adafruit_MPR121::setThresholds(uint8_t touch, uint8_t release) {
+void Adafruit_MPR121_STM32::setThresholds(uint8_t touch, uint8_t release) {
   for (uint8_t i=0; i<12; i++) {
     writeRegister(MPR121_TOUCHTH_0 + 2*i, touch);
     writeRegister(MPR121_RELEASETH_0 + 2*i, release);
@@ -135,7 +135,7 @@ void Adafruit_MPR121::setThresholds(uint8_t touch, uint8_t release) {
  *  @param      t the channel to read
  *  @returns    the filtered reading as a 10 bit unsigned value
  ****************************************************************************************/
-uint16_t  Adafruit_MPR121::filteredData(uint8_t t) {
+uint16_t  Adafruit_MPR121_STM32::filteredData(uint8_t t) {
   if (t > 12) return 0;
   return readRegister16(MPR121_FILTDATA_0L + t*2);
 }
@@ -148,7 +148,7 @@ uint16_t  Adafruit_MPR121::filteredData(uint8_t t) {
  *  @param      t the channel to read.
  *  @returns    the baseline data that was read
  ****************************************************************************************/
-uint16_t  Adafruit_MPR121::baselineData(uint8_t t) {
+uint16_t  Adafruit_MPR121_STM32::baselineData(uint8_t t) {
   if (t > 12) return 0;
   uint16_t bl = readRegister8(MPR121_BASELINE_0 + t);
   return (bl << 2);
@@ -161,7 +161,7 @@ uint16_t  Adafruit_MPR121::baselineData(uint8_t t) {
  *  @returns    a 12 bit integer with each bit corresponding to the touch status of a sensor.
  *              For example, if bit 0 is set then channel 0 of the device is currently deemed to be touched.
  ****************************************************************************************/
-uint16_t  Adafruit_MPR121::touched(void) {
+uint16_t  Adafruit_MPR121_STM32::touched(void) {
   uint16_t t = readRegister16(MPR121_TOUCHSTATUS_L);
   return t & 0x0FFF;
 }
@@ -175,7 +175,7 @@ uint16_t  Adafruit_MPR121::touched(void) {
  *  @param      reg the register address to read from
  *  @returns    the 8 bit value that was read.
  ****************************************************************************************/
-uint8_t Adafruit_MPR121::readRegister8(uint8_t reg) {
+uint8_t Adafruit_MPR121_STM32::readRegister8(uint8_t reg) {
     Wire.beginTransmission(_i2caddr);
     Wire.write(reg);
     Wire.endTransmission(false);
@@ -192,7 +192,7 @@ uint8_t Adafruit_MPR121::readRegister8(uint8_t reg) {
  *  @param      reg the register address to read from
  *  @returns    the 16 bit value that was read.
  ****************************************************************************************/
-uint16_t Adafruit_MPR121::readRegister16(uint8_t reg) {
+uint16_t Adafruit_MPR121_STM32::readRegister16(uint8_t reg) {
     Wire.beginTransmission(_i2caddr);
     Wire.write(reg);
     Wire.endTransmission(false);
@@ -212,7 +212,7 @@ uint16_t Adafruit_MPR121::readRegister16(uint8_t reg) {
     @param  value the value to write
 */
 /**************************************************************************/
-void Adafruit_MPR121::writeRegister(uint8_t reg, uint8_t value) {
+void Adafruit_MPR121_STM32::writeRegister(uint8_t reg, uint8_t value) {
     Wire.beginTransmission(_i2caddr);
     Wire.write((uint8_t)reg);
     Wire.write((uint8_t)(value));

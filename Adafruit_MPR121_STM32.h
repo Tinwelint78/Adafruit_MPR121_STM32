@@ -1,5 +1,5 @@
 /*!
- * @file Adafruit_MPR121.h
+ * @file Adafruit_MPR121_STM32.h
  *
   This is a library for the MPR121 12-Channel Capacitive Sensor
 
@@ -17,15 +17,15 @@
  *
  */
 
-#ifndef ADAFRUIT_MPR121_H
-#define ADAFRUIT_MPR121_H
+#ifndef ADAFRUIT_MPR121_STM32_H
+#define ADAFRUIT_MPR121_STM32_H
  
 #if (ARDUINO >= 100)
  #include "Arduino.h"
 #else
  #include "WProgram.h"
 #endif
-#include <Wire.h>
+#include <SoftWire.h>
 
 // The default I2C address
 #define MPR121_I2CADDR_DEFAULT 0x5A ///< default I2C address
@@ -83,10 +83,10 @@ enum {
     proximity capacitive touch sensor controller.
 */
 /**************************************************************************/
-class Adafruit_MPR121 {
+class Adafruit_MPR121_STM32 {
  public:
   // Hardware I2C
-  Adafruit_MPR121(void);
+  Adafruit_MPR121_STM32(void);
 
   boolean begin(uint8_t i2caddr = MPR121_I2CADDR_DEFAULT);
 
@@ -101,8 +101,9 @@ class Adafruit_MPR121 {
   void setThreshholds(uint8_t touch, uint8_t release) __attribute__((deprecated));
   void setThresholds(uint8_t touch, uint8_t release);
 
+  SoftWire Wire;
  private:
   int8_t _i2caddr;
 };
 
-#endif // ADAFRUIT_MPR121_H
+#endif // ADAFRUIT_MPR121_STM32_H
